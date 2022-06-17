@@ -19,3 +19,25 @@ def helper(S, i):
 
 helper([1, 2, 3], 0)
 print(my_list)
+
+
+#v2
+
+class Solution:
+    my_arr = []
+    def helper(self, nums:List[int],index):
+        if index==len(nums):
+            self.my_arr.append(nums.copy())
+        
+        for _ in range(index, len(nums)):
+            nums[_],nums[index] = nums[index],nums[_]
+            self.helper(nums,index+1)
+            nums[_],nums[index] = nums[index],nums[_]
+        
+    
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        self.my_arr = []
+        self.helper(nums, 0)
+        return self.my_arr
+        
+        
