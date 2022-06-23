@@ -1,44 +1,24 @@
 class Solution:
-    def helper(self, nums, index, temp_sum):
-        # print(index)
-        if index > len(nums):
-            return
-        elif len(nums) > 2:
-            if len(nums) % 2 != 0:
-                temp_sum += nums[0]
-                self.helper(nums[:-1], index+2, temp_sum)
-                # temp_sum -= nums[0]
-                val = temp_sum
-                temp_sum = 0
-                temp_sum += nums[-1]
-                self.helper(nums[1:][::-1], index+2, temp_sum)
-                val = max(val, temp_sum)
+    def helper(self, nums, index, my_dict):
+        if index >= len(nums):
+            return 0
+        if index in my_dict.keys():
+            return my_dict[index]
 
-                temp_sum = 0
-                temp_sum += nums[1]
-                index = 1
-                self.helper(nums[1:], index+2, temp_sum)
-                # temp_sum -= nums[1]
-                val = max(val, temp_sum)
-                # print(val, val_2, val_3)
-                return val
-            else:
-                temp_sum += nums[0]
-                self.helper(nums, index+2, temp_sum)
-                # temp_sum -= nums[0]
-                val = temp_sum
-                # print(temp_sum)
-                # sys.exit(0)
-                temp_sum = 0
-                temp_sum += nums[1]
-                index = 1
-                val_2 = self.helper(nums, index+2, temp_sum)
-                # temp_sum -= nums[1]
-                return max(val, temp_sum)
+        op1 = nums[index] + self.helper(nums, index+2, my_dict)
+        op2 = self.helper(nums, index+1, my_dict)
+        my_dict[index] = max(op1, op2)
+        print(my_dict)
+        return my_dict[index]
 
-    def rob(self, nums: list) -> int:
-        return self.helper(nums, 0, 0)
+    def rob(self, nums) -> int:
+        if len(nums) == 1:
+            return nums[0]
 
-
-s = Solution()
-print(s.rob([1, 2, 3, 1]))
+        my_dict = {}
+        x = self.helper(nums[1:], 0, my_dict)
+        # print(x)
+        my_dict = {}
+        y = self.helper(nums[:-1], 0, my_dict)
+        # print(y)
+        return max(x, y)

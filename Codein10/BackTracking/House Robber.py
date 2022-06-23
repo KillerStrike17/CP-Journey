@@ -1,22 +1,20 @@
 class Solution:
-    def helper(self, nums, temp_sum, index):
 
+    def helper(self, nums, index, my_dict):
         if index >= len(nums):
-            # print(temp_sum)
-            return temp_sum
+            return 0
+        if index in my_dict.keys():
+            return my_dict[index]
 
-        temp_sum += nums[index]
-        val = self.helper(nums, temp_sum, index + 2)
-        # temp_sum -= nums[index]
-
-        return val
+        op1 = nums[index] + self.helper(nums, index+2, my_dict)
+        op2 = self.helper(nums, index+1, my_dict)
+        my_dict[index] = max(op1, op2)
+        return my_dict[index]
 
     def rob(self, nums) -> int:
-        val = self.helper(nums, 0, 0)
-        val2 = self.helper(nums[1:], 0, 0)
-        print(val, val2)
-        return max(val, val2)
+        my_dict = {}
+        return self.helper(nums, 0, my_dict)
 
 
-s = Solution()
-print(s.rob([1, 2, 3, 1]))
+# s = Solution()
+# print(s.rob([1, 2, 3, 1]))
